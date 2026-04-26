@@ -1,0 +1,118 @@
+<Window x:Class="WpfAudioPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WPF Audio Player"
+        Height="260"
+        Width="520"
+        MinHeight="260"
+        MinWidth="520"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E"
+        Foreground="#EAEAEA">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#2D2D30"/>
+            <Setter Property="Foreground" Value="#EAEAEA"/>
+            <Setter Property="BorderBrush" Value="#3F3F46"/>
+            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#EAEAEA"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Bestandsnaam -->
+        <TextBlock x:Name="FileNameText"
+                   Grid.Row="0"
+                   Text="Geen bestand geladen"
+                   FontSize="14"
+                   FontWeight="SemiBold"
+                   TextTrimming="CharacterEllipsis"
+                   Margin="4,0,4,8"/>
+
+        <!-- Positie slider + tijd -->
+        <Grid Grid.Row="1" Margin="4,0,4,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="CurrentTimeText" Grid.Column="0" Text="00:00" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <Slider x:Name="PositionSlider"
+                    Grid.Column="1"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="0"
+                    IsMoveToPointEnabled="True"
+                    Thumb.DragStarted="PositionSlider_DragStarted"
+                    Thumb.DragCompleted="PositionSlider_DragCompleted"
+                    PreviewMouseUp="PositionSlider_PreviewMouseUp"
+                    VerticalAlignment="Center"/>
+            <TextBlock x:Name="TotalTimeText" Grid.Column="2" Text="00:00" VerticalAlignment="Center" Margin="8,0,0,0"/>
+        </Grid>
+
+        <!-- Volume -->
+        <Grid Grid.Row="2" Margin="4,8,4,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Volume" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <Slider x:Name="VolumeSlider"
+                    Grid.Column="1"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="0.7"
+                    ValueChanged="VolumeSlider_ValueChanged"
+                    VerticalAlignment="Center"/>
+            <TextBlock x:Name="VolumeText"
+                       Grid.Column="2"
+                       Text="70%"
+                       VerticalAlignment="Center"
+                       Width="40"
+                       TextAlignment="Right"/>
+        </Grid>
+
+        <!-- Knoppen -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
+            <Button x:Name="OpenButton" Content="Openen..." Click="OpenButton_Click"/>
+            <Button x:Name="PlayButton" Content="Afspelen" Click="PlayButton_Click" IsEnabled="False"/>
+            <Button x:Name="PauseButton" Content="Pauze" Click="PauseButton_Click" IsEnabled="False"/>
+            <Button x:Name="StopButton" Content="Stop" Click="StopButton_Click" IsEnabled="False"/>
+        </StackPanel>
+
+        <!-- MediaElement (onzichtbaar, doet alleen audio) -->
+        <MediaElement x:Name="MediaPlayer"
+                      Grid.Row="4"
+                      LoadedBehavior="Manual"
+                      UnloadedBehavior="Manual"
+                      Volume="0.7"
+                      MediaOpened="MediaPlayer_MediaOpened"
+                      MediaEnded="MediaPlayer_MediaEnded"
+                      MediaFailed="MediaPlayer_MediaFailed"
+                      Visibility="Collapsed"/>
+
+        <!-- Status -->
+        <TextBlock x:Name="StatusText"
+                   Grid.Row="5"
+                   Text="Klaar"
+                   Margin="4,12,4,0"
+                   Foreground="#9A9A9A"
+                   FontSize="11"/>
+    </Grid>
+</Window>
